@@ -1,9 +1,11 @@
 import React, {useState} from 'react';
-import { StyleSheet, Text, View, TextInput, Button } from 'react-native';
+import { StyleSheet, Text, View, TextInput, Button, FlatList } from 'react-native';
 
 export default function App() {
 
-  const [state, setState] = useState("Hello world 😃")
+  const [state, setState] = useState("")
+
+  const [list, setList ] = useState([])
 
   const handleChange = async e => {
     setState(e.target.value)
@@ -15,12 +17,27 @@ export default function App() {
     if (state.search("love") !== -1) setState(state.replace("love", "💖 "))
   }
 
+  const addToList = () => {
+    const newList = [...list]
+    newList.push({key: state})
+    setList([...newList])
+    setState("")
+  }
 
   return (
     <View style={styles.container}>
-      
+      <View>
+        <FlatList
+          style={{marginBottom: "20px"}}
+          data={[
+            ...list
+          ]}
+          renderItem={({item}) => <Text style={{marginBottom: "10px"}}>{item.key}</Text>}
+        />
+      </View>
+      {({item}) => <Text>{item.name}</Text>}
       <TextInput
-        placeholder="Type here..."
+        placeholder="Enter new list item here..."
         onChange={ handleChange}
         value={state}
         style={{
@@ -31,7 +48,7 @@ export default function App() {
           borderWidth: 1
         }}
       />
-      <Button onPress={() => setState("")} title="Clear Text" />
+      <Button onPress={() => addToList()} title="Add" />
     </View>
   );
 }
