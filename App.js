@@ -1,16 +1,18 @@
 import React, {useState} from 'react';
-import { StyleSheet, Text, View, Button, TextInput, FlatList } from 'react-native';
+import { StyleSheet, Text, View, Button, TextInput, FlatList, ActivityIndicator } from 'react-native';
 
 export default function App() {
 
   const [state, setState] = useState("")
   const [message, setMessages] = useState([])
+  const [activity, setActivity] = useState(false)
 
   const changeText = text => {
     setState(text)
   }
 
   const handleSubmit = () => {
+ 
 
     if (!state) return
 
@@ -18,8 +20,15 @@ export default function App() {
     date = date.getHours() + ":" + date.getMinutes() + " " + " -  " + date.getDate() + "/" + date.getMonth() + "/" + date.getFullYear()
     let randomId = Math.random().toString(36).substring(7)
 
-    setMessages([...message, {date: date, msg: state, id: randomId}])
-    setState("")
+    setTimeout(() => {
+      setActivity(activity => !activity)
+      setMessages([...message, {date: date, msg: state, id: randomId}])
+      setState("")
+    }, 400)
+
+    setActivity(activity => !activity)
+
+   
   }
 
   return (
@@ -31,6 +40,8 @@ export default function App() {
           onChangeText={changeText}
       />
       <Button title="send message" onPress={handleSubmit}/>
+
+     {activity ? <ActivityIndicator /> : <Text></Text> }
 
       <View style={{marginTop: 10}}>
         <FlatList
