@@ -29,9 +29,10 @@ export default function Main() {
       setMsgList(oldMsgList => [
         ...oldMsgList,
         {
-          id: randomId,
-          msg: state,
-          date
+            id: randomId,
+            msg: state,
+            date,
+            read: false
         }
       ])
       setState("")

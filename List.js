@@ -1,26 +1,30 @@
 import React, {useEffect} from "react"
 import {StyleSheet, View, Text, FlatList} from "react-native"
 import {list} from "./store"
-import { useRecoilValue } from "recoil"
+import { useRecoilValue, useSetRecoilState } from "recoil"
+import { Icons } from "react-native-elements"
+
 
 export default function List() {
     const msgList = useRecoilValue(list)
+    const setMsgiist = useSetRecoilState(list)
 
-    useEffect(() => {
-        console.log(msgList)
-    }, [msgList])
+    const handlePress = id => {
+        console.log(id)
+    }
 
     return (
         <View style={{ marginTop: 10 }}>
             <FlatList
-            data={msgList}
-            renderItem={({item}) => (
-                <View>
-                    <Text style={styles.message}>{item.msg}</Text>
-                    <Text style={styles.date}>{item.date}</Text>
-                </View>
-            )}
-            keyExtractor={item => item.id}
+                data={msgList}
+                renderItem={({item}) => (
+                    <View>
+                        <Text onPress={() => handlePress(item.id)} style={styles.message}>{item.msg}</Text>
+                        <Text style={styles.date}>{item.date}</Text>
+                        
+                    </View>
+                )}
+                keyExtractor={item => item.id}
             />
         </View>
     )
